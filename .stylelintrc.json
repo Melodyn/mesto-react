@@ -6,6 +6,9 @@
   "plugins": [
     "stylelint-order"
   ],
+  "ignoreFiles": [
+    "src/vendor/*.css"
+  ],
   "rules": {
     "import-notation": "url",
     "selector-class-pattern": null,

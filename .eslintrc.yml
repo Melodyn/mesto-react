@@ -9,6 +9,8 @@ parserOptions:
     jsx: true
   ecmaVersion: latest
   sourceType: module
+ignorePatterns:
+  - "src/_components"
 plugins:
   - react
 rules:
