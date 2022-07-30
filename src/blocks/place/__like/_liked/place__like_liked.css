@@ -1,0 +1,7 @@
+.place__like_liked {
+  background-image: url('../../../../images/buttons/liked.svg');
+}
+
+.place__like_liked:active {
+  background-image: url('../../../../images/buttons/like.svg');
+}

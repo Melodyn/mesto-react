@@ -1,0 +1,12 @@
+.form__items {
+  width: 100%;
+  padding: 16px 0 8px;
+  border: none;
+  margin: 0;
+}
+
+@media screen and (max-height: 450px) {
+  .form__items {
+    padding: 8px 0;
+  }
+}

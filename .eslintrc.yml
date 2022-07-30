@@ -13,6 +13,9 @@ plugins:
   - react
 rules:
   react/react-in-jsx-scope: off
+  jsx-a11y/tabindex-no-positive: off
+  jsx-a11y/anchor-has-content: off
+  jsx-a11y/anchor-is-valid: off
   max-len: [ "error", {
     "code": 120,
     "ignoreComments": true,
