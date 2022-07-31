@@ -2,7 +2,7 @@ import './vendor/normalize.css';
 import './pages/index.css';
 import React from 'react';
 import { Api } from './utils/Api';
-import { apiConfig, dataJSON } from './utils/constants';
+import { apiConfig } from './utils/constants';
 // components
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -28,10 +28,9 @@ const App = () => {
   const [selectedCard, setSelectedCard] = React.useState({});
 
   React.useEffect(() => {
-    updateCards(dataJSON.places.slice().reverse());
     apiMesto
       .getPlaces()
-      // .then((data) => updateCards(data.slice().reverse()))
+      .then((data) => updateCards(data.slice().reverse()))
       .catch(alert);
   }, []);
 

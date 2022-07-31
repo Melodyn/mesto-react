@@ -1,6 +1,5 @@
 import React from 'react';
 import avatarImg from '../images/avatar.jpg';
-import { dataJSON } from '../utils/constants';
 
 const Main = (props) => {
   const {
@@ -19,10 +18,9 @@ const Main = (props) => {
   });
 
   React.useEffect(() => {
-    updateProfile(dataJSON.profile);
     apiMesto
       .getProfile()
-      // .then((data) => updateProfile(data))
+      .then((data) => updateProfile(data))
       .catch(alert);
   }, []);
 
