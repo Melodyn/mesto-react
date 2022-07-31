@@ -18,6 +18,10 @@ rules:
   jsx-a11y/tabindex-no-positive: off
   jsx-a11y/anchor-has-content: off
   jsx-a11y/anchor-is-valid: off
+  react/function-component-definition: off
+  import/prefer-default-export: off
+  react/prop-types: off
+  no-underscore-dangle: off
   max-len: [ "error", {
     "code": 120,
     "ignoreComments": true,

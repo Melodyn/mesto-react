@@ -1,4 +1,4 @@
-import { httpMethod } from '../utils/constants.js';
+import { httpMethod } from './constants';
 
 export class Api {
   constructor(config) {
@@ -44,10 +44,6 @@ export class Api {
     return this._fetch('users/me');
   }
 
-  getPlaces() {
-    return this._fetch('cards');
-  }
-
   setAvatar({ avatar }) {
     return this._fetch('users/me/avatar', httpMethod.patch, { avatar });
   }
@@ -57,6 +53,10 @@ export class Api {
   }
 
   /* place */
+  getPlaces() {
+    return this._fetch('cards');
+  }
+
   createPlace({ name, link }) {
     return this._fetch('cards', httpMethod.post, { name, link });
   }
