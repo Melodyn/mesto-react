@@ -1,15 +1,15 @@
-import './vendor/normalize.css';
-import './pages/index.css';
-import React from 'react';
-import { Api } from './utils/Api';
-import { apiConfig } from './utils/constants';
+import '../vendor/normalize.css';
+import '../pages/index.css';
+import { useEffect, useState } from 'react';
+import { Api } from '../utils/Api';
+import { apiConfig } from '../utils/constants';
 // components
-import { Header } from './components/Header';
-import { Footer } from './components/Footer';
-import { Main } from './components/Main';
-import { Card } from './components/Card';
-import { PopupWithForm } from './components/PopupWithForm';
-import { PopupWithImage } from './components/PopupWithImage';
+import { Header } from './Header';
+import { Footer } from './Footer';
+import { Main } from './Main';
+import { Card } from './Card';
+import { PopupWithForm } from './PopupWithForm';
+import { PopupWithImage } from './PopupWithImage';
 
 const enumPopupName = [
   'profile',
@@ -23,11 +23,15 @@ const enumPopupName = [
 
 const App = () => {
   const apiMesto = new Api(apiConfig);
-  const [openPopupName, setOpenPopupName] = React.useState('');
-  const [cards, updateCards] = React.useState([]);
-  const [selectedCard, setSelectedCard] = React.useState({});
+  const [openPopupName, setOpenPopupName] = useState('');
+  const [cards, updateCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState({});
 
-  React.useEffect(() => {
+  const handleClosePopup = () => {
+    setOpenPopupName('');
+  };
+
+  useEffect(() => {
     apiMesto
       .getPlaces()
       .then((data) => updateCards(data.slice().reverse()))
@@ -70,10 +74,9 @@ const App = () => {
       <PopupWithForm
         name={enumPopupName.profile}
         title="Редактировать профиль"
+        submitText="Сохранить"
         isOpen={enumPopupName.profile === openPopupName}
-        onClose={() => {
-          setOpenPopupName('');
-        }}
+        onClose={handleClosePopup}
       >
         <fieldset className="form__items">
           <input
@@ -104,10 +107,9 @@ const App = () => {
       <PopupWithForm
         name={enumPopupName.place}
         title="Новое место"
+        submitText="Создать"
         isOpen={enumPopupName.place === openPopupName}
-        onClose={() => {
-          setOpenPopupName('');
-        }}
+        onClose={handleClosePopup}
       >
         <fieldset className="form__items">
           <input
@@ -136,10 +138,9 @@ const App = () => {
       <PopupWithForm
         name={enumPopupName.avatar}
         title="Обновить аватар"
+        submitText="Сохранить"
         isOpen={enumPopupName.avatar === openPopupName}
-        onClose={() => {
-          setOpenPopupName('');
-        }}
+        onClose={handleClosePopup}
       >
         <fieldset className="form__items">
           <input
@@ -160,7 +161,7 @@ const App = () => {
         card={selectedCard}
         isOpen={enumPopupName.preview === openPopupName}
         onClose={() => {
-          setOpenPopupName('');
+          handleClosePopup();
           setSelectedCard({});
         }}
       />

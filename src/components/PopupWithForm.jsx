@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 const PopupWithForm = (props) => {
   const {
-    name, title, isOpen,
+    name, title, submitText, isOpen,
     onClose,
     children,
   } = props;
@@ -40,7 +40,7 @@ const PopupWithForm = (props) => {
             className="button form__submit"
             tabIndex={childrenCount + 1}
           >
-            Сохранить
+            {submitText}
           </button>
         </form>
       </div>
