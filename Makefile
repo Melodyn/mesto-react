@@ -4,7 +4,7 @@ install-dependencies:
 
 lint:
 	npx stylelint "./src/**/*.css"
-	npx eslint ./src
+	npx eslint --ext .js,.jsx ./src
 
 run:
 	npm run start

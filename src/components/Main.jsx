@@ -1,5 +1,6 @@
-import React from 'react';
-import avatarImg from '../images/avatar.jpg';
+import { useState, useEffect, useContext } from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { Card } from './Card';
 
 const Main = (props) => {
   const {
@@ -7,29 +8,52 @@ const Main = (props) => {
     onEditProfile,
     onAddPlace,
     onEditAvatar,
-    children,
+    onCardClick,
   } = props;
-  const [profile, updateProfile] = React.useState({
-    name: 'Меместо',
-    about: 'Место ваших мемов',
-    avatar: avatarImg,
-    _id: '',
-    cohort: '',
-  });
+  const currentUser = useContext(CurrentUserContext);
+  const [cards, updateCards] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     apiMesto
-      .getProfile()
-      .then((data) => updateProfile(data))
+      .getCards()
+      .then((data) => updateCards(data.slice().reverse()))
       .catch(alert);
   }, []);
+
+  const onCardLike = (card) => {
+    apiMesto
+      .likeCard({ cardId: card._id, liked: card.isLiked })
+      .then((updatedCard) => {
+        const updatedCards = cards.map((crd) => ((crd._id === updatedCard._id) ? updatedCard : crd));
+        updateCards(updatedCards);
+      });
+  };
+
+  const onCardRemove = (card) => {
+    apiMesto
+      .removeCard({ cardId: card._id })
+      .then(() => {
+        const updatedCards = cards.filter(({ _id }) => _id !== card._id);
+        updateCards(updatedCards);
+      });
+  };
+
+  const cardComponents = cards.map((card) => (
+    <Card
+      key={card._id}
+      card={card}
+      onClick={onCardClick}
+      onLike={onCardLike}
+      onRemove={onCardRemove}
+    />
+  ));
 
   return (
     <main className="content">
       <section className="profile" aria-label="Описание блога">
         <div className="profile__avatar-container">
           <img
-            src={profile.avatar}
+            src={currentUser.avatar}
             alt="Аватар блога"
             className="profile__avatar"
           />
@@ -42,14 +66,14 @@ const Main = (props) => {
             onClick={onEditAvatar}
           />
         </div>
-        <h1 className="profile__title">{profile.name}</h1>
+        <h1 className="profile__title">{currentUser.name}</h1>
         <button
           type="button"
           className="button profile__edit"
           aria-label="Редактировать"
           onClick={onEditProfile}
         />
-        <p className="profile__subtitle">{profile.about}</p>
+        <p className="profile__subtitle">{currentUser.about}</p>
         <button
           type="button"
           className="button profile__add-place"
@@ -59,7 +83,7 @@ const Main = (props) => {
       </section>
 
       <section className="places" aria-label="Красивые картинки">
-        <ul className="places__list">{children}</ul>
+        <ul className="places__list">{cardComponents}</ul>
       </section>
     </main>
   );

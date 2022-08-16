@@ -9,8 +9,6 @@ parserOptions:
     jsx: true
   ecmaVersion: latest
   sourceType: module
-ignorePatterns:
-  - "src/_components"
 plugins:
   - react
 rules:
@@ -22,11 +20,11 @@ rules:
   import/prefer-default-export: off
   react/prop-types: off
   no-underscore-dangle: off
-  max-len: [ "error", {
+  max-len: ["error", {
     "code": 120,
     "ignoreComments": true,
     "ignoreTrailingComments": true,
     "ignoreUrls": true,
     "ignoreStrings": true,
     "ignoreTemplateLiterals": true
-  } ]
+  }]

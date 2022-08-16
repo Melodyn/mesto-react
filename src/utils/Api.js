@@ -53,30 +53,30 @@ export class Api {
   }
 
   /* place */
-  getPlaces() {
+  getCards() {
     return this._fetch('cards');
   }
 
-  createPlace({ name, link }) {
+  createCard({ name, link }) {
     return this._fetch('cards', httpMethod.post, { name, link });
   }
 
-  removePlace({ cardId }) {
+  removeCard({ cardId }) {
     return this._fetch(`cards/${cardId}`, httpMethod.delete);
   }
 
-  likePlace({ cardId, liked }) {
+  likeCard({ cardId, liked }) {
     if (liked) {
-      return this.removeLikePlace({ cardId });
+      return this.removeLikeCard({ cardId });
     }
-    return this.addLikePlace({ cardId });
+    return this.addLikeCard({ cardId });
   }
 
-  addLikePlace({ cardId }) {
+  addLikeCard({ cardId }) {
     return this._fetch(`cards/like/${cardId}`, httpMethod.put);
   }
 
-  removeLikePlace({ cardId }) {
+  removeLikeCard({ cardId }) {
     return this._fetch(`cards/like/${cardId}`, httpMethod.delete);
   }
 }

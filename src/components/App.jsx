@@ -7,9 +7,10 @@ import { apiConfig } from '../utils/constants';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { Main } from './Main';
-import { Card } from './Card';
 import { PopupWithForm } from './PopupWithForm';
 import { PopupWithImage } from './PopupWithImage';
+// contexts
+import { defaultCurrentUser, CurrentUserContext } from '../contexts/CurrentUserContext';
 
 const enumPopupName = [
   'profile',
@@ -24,19 +25,19 @@ const enumPopupName = [
 const App = () => {
   const apiMesto = new Api(apiConfig);
   const [openPopupName, setOpenPopupName] = useState('');
-  const [cards, updateCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState({});
+  const [currentUser, setCurrentUser] = useState(defaultCurrentUser);
+
+  useEffect(() => {
+    apiMesto
+      .getProfile()
+      .then((data) => setCurrentUser(data))
+      .catch(alert);
+  }, []);
 
   const handleClosePopup = () => {
     setOpenPopupName('');
   };
-
-  useEffect(() => {
-    apiMesto
-      .getPlaces()
-      .then((data) => updateCards(data.slice().reverse()))
-      .catch(alert);
-  }, []);
 
   const onEditProfile = () => {
     setOpenPopupName(enumPopupName.profile);
@@ -53,22 +54,15 @@ const App = () => {
   };
 
   return (
-    <>
+    <CurrentUserContext.Provider value={currentUser}>
       <Header />
       <Main
         apiMesto={apiMesto}
         onEditProfile={onEditProfile}
         onAddPlace={onAddPlace}
         onEditAvatar={onEditAvatar}
-      >
-        {cards.map((card) => (
-          <Card
-            key={card._id}
-            card={card}
-            onCardClick={onCardClick}
-          />
-        ))}
-      </Main>
+        onCardClick={onCardClick}
+      />
       <Footer />
 
       <PopupWithForm
@@ -165,7 +159,7 @@ const App = () => {
           setSelectedCard({});
         }}
       />
-    </>
+    </CurrentUserContext.Provider>
   );
 };
 
