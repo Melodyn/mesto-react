@@ -52,7 +52,7 @@ export class Api {
     return this._fetch('users/me', httpMethod.patch, { name, about });
   }
 
-  /* place */
+  /* card */
   getCards() {
     return this._fetch('cards');
   }

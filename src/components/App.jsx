@@ -2,160 +2,134 @@ import '../vendor/normalize.css';
 import '../pages/index.css';
 import { useEffect, useState } from 'react';
 import { Api } from '../utils/Api';
-import { apiConfig } from '../utils/constants';
+import { apiConfig, enumPopupName } from '../utils/constants';
 // components
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { Main } from './Main';
-import { PopupWithForm } from './PopupWithForm';
-import { PopupWithImage } from './PopupWithImage';
+import { PopupWithImage } from './Popup/PopupWithImage';
+import { PopupEditProfile } from './Popup/PopupEditProfile';
+import { PopupEditAvatar } from './Popup/PopupEditAvatar';
+import { PopupAddCard } from './Popup/PopupAddCard';
 // contexts
 import { defaultCurrentUser, CurrentUserContext } from '../contexts/CurrentUserContext';
-
-const enumPopupName = [
-  'profile',
-  'place',
-  'avatar',
-  'preview',
-].reduce((acc, value) => {
-  acc[value] = value;
-  return acc;
-}, {});
 
 const App = () => {
   const apiMesto = new Api(apiConfig);
   const [openPopupName, setOpenPopupName] = useState('');
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState(defaultCurrentUser);
+  const [cards, updateCards] = useState([]);
 
   useEffect(() => {
-    apiMesto
-      .getProfile()
-      .then((data) => setCurrentUser(data))
+    Promise.all([
+      apiMesto.getCards(),
+      apiMesto.getProfile(),
+    ])
+      .then(([initCards, user]) => {
+        updateCards(initCards.slice().reverse());
+        setCurrentUser(user);
+      })
       .catch(alert);
   }, []);
 
-  const handleClosePopup = () => {
+  const onClosePopup = () => {
     setOpenPopupName('');
   };
 
-  const onEditProfile = () => {
+  const onOpenPopupEditProfile = () => {
     setOpenPopupName(enumPopupName.profile);
   };
-  const onAddPlace = () => {
-    setOpenPopupName(enumPopupName.place);
-  };
-  const onEditAvatar = () => {
+  const onOpenPopupEditAvatar = () => {
     setOpenPopupName(enumPopupName.avatar);
   };
+  const onOpenPopupCard = () => {
+    setOpenPopupName(enumPopupName.card);
+  };
+
   const onCardClick = (card) => {
     setSelectedCard(card);
     setOpenPopupName(enumPopupName.preview);
+  };
+  const onCardLike = (card) => {
+    apiMesto
+      .likeCard({ cardId: card._id, liked: card.liked })
+      .then((updatedCard) => {
+        const updatedCards = cards.map((crd) => ((crd._id === card._id) ? updatedCard : crd));
+        updateCards(updatedCards);
+      });
+  };
+  const onCardRemove = (card) => {
+    apiMesto
+      .removeCard({ cardId: card._id })
+      .then(() => {
+        const updatedCards = cards.filter(({ _id }) => _id !== card._id);
+        updateCards(updatedCards);
+      });
+  };
+  const onCardAdd = (data) => {
+    apiMesto
+      .createCard(data)
+      .then((card) => {
+        onClosePopup();
+        updateCards([card, ...cards]);
+      });
+  };
+
+  const onEditProfile = (updatedInfo) => {
+    apiMesto
+      .setInfo(updatedInfo)
+      .then((updatedUser) => {
+        onClosePopup();
+        setCurrentUser(updatedUser);
+      });
+  };
+  const onEditAvatar = (updatedInfo) => {
+    apiMesto
+      .setAvatar(updatedInfo)
+      .then((updatedUser) => {
+        onClosePopup();
+        setCurrentUser(updatedUser);
+      });
   };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
       <Main
-        apiMesto={apiMesto}
-        onEditProfile={onEditProfile}
-        onAddPlace={onAddPlace}
-        onEditAvatar={onEditAvatar}
+        cards={cards}
+        onEditProfile={onOpenPopupEditProfile}
+        onAddCard={onOpenPopupCard}
+        onEditAvatar={onOpenPopupEditAvatar}
         onCardClick={onCardClick}
+        onCardLike={onCardLike}
+        onCardRemove={onCardRemove}
       />
       <Footer />
 
-      <PopupWithForm
-        name={enumPopupName.profile}
-        title="Редактировать профиль"
-        submitText="Сохранить"
+      <PopupEditProfile
         isOpen={enumPopupName.profile === openPopupName}
-        onClose={handleClosePopup}
-      >
-        <fieldset className="form__items">
-          <input
-            type="text"
-            name="title"
-            className="form__item"
-            placeholder="Название профиля"
-            minLength="2"
-            maxLength="40"
-            tabIndex="1"
-            required
-          />
-          <span className="form__item-error form__item-error_field_title" />
-          <input
-            type="text"
-            name="subtitle"
-            className="form__item"
-            placeholder="Описание профиля"
-            minLength="2"
-            maxLength="200"
-            tabIndex="2"
-            required
-          />
-          <span className="form__item-error form__item-error_field_subtitle" />
-        </fieldset>
-      </PopupWithForm>
+        onSave={onEditProfile}
+        onClose={onClosePopup}
+      />
 
-      <PopupWithForm
-        name={enumPopupName.place}
-        title="Новое место"
-        submitText="Создать"
-        isOpen={enumPopupName.place === openPopupName}
-        onClose={handleClosePopup}
-      >
-        <fieldset className="form__items">
-          <input
-            type="text"
-            name="name"
-            className="form__item"
-            placeholder="Название"
-            tabIndex="1"
-            minLength="2"
-            maxLength="30"
-            required
-          />
-          <span className="form__item-error form__item-error_field_name" />
-          <input
-            type="url"
-            name="link"
-            className="form__item"
-            placeholder="Ссылка на картинку"
-            tabIndex="2"
-            required
-          />
-          <span className="form__item-error form__item-error_field_link" />
-        </fieldset>
-      </PopupWithForm>
-
-      <PopupWithForm
-        name={enumPopupName.avatar}
-        title="Обновить аватар"
-        submitText="Сохранить"
+      <PopupEditAvatar
         isOpen={enumPopupName.avatar === openPopupName}
-        onClose={handleClosePopup}
-      >
-        <fieldset className="form__items">
-          <input
-            type="url"
-            name="avatar"
-            className="form__item"
-            placeholder="Ссылка на изображение"
-            minLength="2"
-            maxLength="200"
-            tabIndex="1"
-            required
-          />
-          <span className="form__item-error form__item-error_field_avatar" />
-        </fieldset>
-      </PopupWithForm>
+        onSave={onEditAvatar}
+        onClose={onClosePopup}
+      />
+
+      <PopupAddCard
+        isOpen={enumPopupName.card === openPopupName}
+        onSave={onCardAdd}
+        onClose={onClosePopup}
+      />
 
       <PopupWithImage
         card={selectedCard}
         isOpen={enumPopupName.preview === openPopupName}
         onClose={() => {
-          handleClosePopup();
+          onClosePopup();
           setSelectedCard({});
         }}
       />

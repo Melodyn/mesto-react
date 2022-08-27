@@ -1,4 +1,4 @@
-.place__link {
+.card__link {
   overflow: hidden;
   max-width: calc(100% - (22px + 16px));
   padding: 0;
@@ -13,6 +13,6 @@
   white-space: nowrap;
 }
 
-.place__link:hover {
+.card__link:hover {
   opacity: .6;
 }

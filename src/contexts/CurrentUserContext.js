@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import avatarImg from '../images/avatar.jpg';
+import avatarImg from '../images/avatar.gif';
 
 export const defaultCurrentUser = {
   name: 'Меместо',

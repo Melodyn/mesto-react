@@ -1,4 +1,4 @@
-.profile__add-place {
+.profile__add-card {
   position: relative;
   width: 150px;
   height: 50px;
@@ -9,7 +9,7 @@
   transition: .3s;
 }
 
-.profile__add-place::before {
+.profile__add-card::before {
   position: absolute;
   top: calc(50% - (22px / 2));
   left: calc(50% - (22px / 2));
@@ -21,17 +21,17 @@
   content: '';
 }
 
-.profile__add-place:hover {
+.profile__add-card:hover {
   opacity: .6;
 }
 
 @media screen and (max-width: 611px) {
-  .profile__add-place {
+  .profile__add-card {
     width: 100%;
     margin-top: 32px;
   }
 
-  .profile__add-place::before {
+  .profile__add-card::before {
     top: calc(50% - (16px / 2));
     left: calc(50% - (16px / 2));
     width: 16px;

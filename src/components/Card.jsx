@@ -12,42 +12,42 @@ const Card = ({
   const card = {
     ...sourceCard,
     isOwner: (currentUser._id === owner._id),
-    isLiked: likes.some((liker) => liker._id === currentUser._id),
+    liked: likes.some((liker) => liker._id === currentUser._id),
   };
 
   return (
-    <li className="place-item">
-      <article className="place" aria-label={name}>
+    <li className="card-item">
+      <article className="card" aria-label={name}>
         <img
           src={link}
           alt={name}
-          className="place__image"
+          className="card__image"
           aria-hidden="true"
           onClick={() => onClick(card)}
         />
-        <div className="place__info">
+        <div className="card__info">
           <a
             href={link}
-            className="place__link"
+            className="card__link"
             target="_blank"
             rel="noreferrer"
           >
             {name}
           </a>
-          <div className="place__like-container">
+          <div className="card__like-container">
             <button
               type="button"
-              className={cn('button', 'place__like', { place__like_liked: card.isLiked })}
+              className={cn('button', 'card__like', { card__like_liked: card.liked })}
               aria-label="Оценить"
               onClick={() => onLike(card)}
             />
-            <span className="place__like-count">{likes.length}</span>
+            <span className="card__like-count">{likes.length}</span>
           </div>
         </div>
         {card.isOwner && (
         <button
           type="button"
-          className="button place__remove"
+          className="button card__remove"
           aria-label="Удалить"
           onClick={() => onRemove(card)}
         />

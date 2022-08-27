@@ -7,26 +7,26 @@
 @import url('../blocks/button/button.css');
 
 @import url('../blocks/profile/profile.css');
-@import url('../blocks/profile/__add-place/profile__add-place.css');
+@import url('../blocks/profile/__add-card/profile__add-card.css');
 @import url('../blocks/profile/__avatar/profile__avatar.css');
 @import url('../blocks/profile/__edit/profile__edit.css');
 @import url('../blocks/profile/__title/profile__title.css');
 @import url('../blocks/profile/__subtitle/profile__subtitle.css');
 @import url('../blocks/profile/__avatar-container/profile__avatar-container.css');
 
-@import url('../blocks/places/places.css');
-@import url('../blocks/places/__list/places__list.css');
+@import url('../blocks/cards/cards.css');
+@import url('../blocks/cards/__list/cards__list.css');
 
-@import url('../blocks/place/place.css');
-@import url('../blocks/place/__info/place__info.css');
-@import url('../blocks/place/__image/place__image.css');
-@import url('../blocks/place/__image/_offset/place__image_offset_right-bottom.css');
-@import url('../blocks/place/__remove/place__remove.css');
-@import url('../blocks/place/__like-container/place__like-container.css');
-@import url('../blocks/place/__like/place__like.css');
-@import url('../blocks/place/__like/_liked/place__like_liked.css');
-@import url('../blocks/place/__like-count/place__like-count.css');
-@import url('../blocks/place/__link/place__link.css');
+@import url('../blocks/card/card.css');
+@import url('../blocks/card/__info/card__info.css');
+@import url('../blocks/card/__image/card__image.css');
+@import url('../blocks/card/__image/_offset/card__image_offset_right-bottom.css');
+@import url('../blocks/card/__remove/card__remove.css');
+@import url('../blocks/card/__like-container/card__like-container.css');
+@import url('../blocks/card/__like/card__like.css');
+@import url('../blocks/card/__like/_liked/card__like_liked.css');
+@import url('../blocks/card/__like-count/card__like-count.css');
+@import url('../blocks/card/__link/card__link.css');
 
 @import url('../blocks/footer/footer.css');
 @import url('../blocks/footer/__copyright/footer__copyright.css');

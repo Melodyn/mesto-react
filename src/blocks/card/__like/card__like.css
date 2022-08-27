@@ -1,4 +1,4 @@
-.place__like {
+.card__like {
   width: 22px;
   height: 19px;
   background-image: url('../../../images/buttons/like.svg');
@@ -7,10 +7,10 @@
   transition: .3s;
 }
 
-.place__like:hover {
+.card__like:hover {
   opacity: .6;
 }
 
-.place__like:active {
+.card__like:active {
   background-image: url('../../../images/buttons/liked.svg');
 }
