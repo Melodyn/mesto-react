@@ -5,7 +5,7 @@ export const useForm = (initValues = {}) => {
 
   const processValues = (event) => {
     const { name, value } = event.target;
-    setValues({ ...values, [name.trim()]: value.trim() });
+    setValues({ ...values, [name]: value });
   };
 
   return [values, processValues, setValues];
