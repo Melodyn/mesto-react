@@ -1,7 +1,8 @@
-import { useState, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { PopupWithForm } from './PopupWithForm';
 import { enumPopupName } from '../../utils/constants';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useForm } from '../../hooks/useForm';
 
 const PopupEditProfile = (props) => {
   const {
@@ -10,13 +11,11 @@ const PopupEditProfile = (props) => {
     onClose,
   } = props;
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState(currentUser.name);
-  const [about, setAbout] = useState(currentUser.about);
+  const [values, setValues, updateInitValues] = useForm(currentUser);
 
   useEffect(() => {
-    setName(currentUser.name);
-    setAbout(currentUser.about);
-  }, [currentUser]);
+    updateInitValues(currentUser);
+  }, [currentUser, isOpen]);
 
   return (
     <PopupWithForm
@@ -26,7 +25,7 @@ const PopupEditProfile = (props) => {
       isOpen={isOpen}
       onSubmit={(e) => {
         e.preventDefault();
-        onSave({ name, about });
+        onSave(values);
       }}
       onClose={onClose}
     >
@@ -39,9 +38,9 @@ const PopupEditProfile = (props) => {
           minLength="2"
           maxLength="40"
           tabIndex="1"
-          value={name}
+          value={values.name}
           required
-          onChange={(e) => setName(e.target.value)}
+          onChange={setValues}
         />
         <span className="form__item-error form__item-error_field_title" />
         <input
@@ -52,9 +51,9 @@ const PopupEditProfile = (props) => {
           minLength="2"
           maxLength="200"
           tabIndex="2"
-          value={about}
+          value={values.about}
           required
-          onChange={(e) => setAbout(e.target.value)}
+          onChange={setValues}
         />
         <span className="form__item-error form__item-error_field_subtitle" />
       </fieldset>

@@ -22,20 +22,32 @@ const App = () => {
   const [cards, updateCards] = useState([]);
 
   useEffect(() => {
-    Promise.all([
-      apiMesto.getCards(),
-      apiMesto.getProfile(),
-    ])
+    Promise
+      .all([
+        apiMesto.getCards(),
+        apiMesto.getProfile(),
+      ])
       .then(([initCards, user]) => {
         updateCards(initCards.slice().reverse());
         setCurrentUser(user);
       })
-      .catch(alert);
+      .catch(console.error);
   }, []);
 
   const onClosePopup = () => {
     setOpenPopupName('');
   };
+  const closeByEscape = (e) => (e.key === 'Escape') && onClosePopup();
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (openPopupName !== '') {
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      };
+    }
+  }, [openPopupName]);
 
   const onOpenPopupEditProfile = () => {
     setOpenPopupName(enumPopupName.profile);
@@ -57,7 +69,8 @@ const App = () => {
       .then((updatedCard) => {
         const updatedCards = cards.map((crd) => ((crd._id === card._id) ? updatedCard : crd));
         updateCards(updatedCards);
-      });
+      })
+      .catch(console.error);
   };
   const onCardRemove = (card) => {
     apiMesto
@@ -65,7 +78,8 @@ const App = () => {
       .then(() => {
         const updatedCards = cards.filter(({ _id }) => _id !== card._id);
         updateCards(updatedCards);
-      });
+      })
+      .catch(console.error);
   };
   const onCardAdd = (data) => {
     apiMesto
@@ -73,7 +87,8 @@ const App = () => {
       .then((card) => {
         onClosePopup();
         updateCards([card, ...cards]);
-      });
+      })
+      .catch(console.error);
   };
 
   const onEditProfile = (updatedInfo) => {
@@ -82,7 +97,8 @@ const App = () => {
       .then((updatedUser) => {
         onClosePopup();
         setCurrentUser(updatedUser);
-      });
+      })
+      .catch(console.error);
   };
   const onEditAvatar = (updatedInfo) => {
     apiMesto
@@ -90,7 +106,8 @@ const App = () => {
       .then((updatedUser) => {
         onClosePopup();
         setCurrentUser(updatedUser);
-      });
+      })
+      .catch(console.error);
   };
 
   return (

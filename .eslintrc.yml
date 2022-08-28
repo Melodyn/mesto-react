@@ -28,3 +28,4 @@ rules:
     "ignoreStrings": true,
     "ignoreTemplateLiterals": true
   }]
+  no-console: ["error", { allow: ["error"] }]

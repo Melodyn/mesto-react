@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { PopupWithForm } from './PopupWithForm';
 import { enumPopupName } from '../../utils/constants';
+import { useForm } from '../../hooks/useForm';
 
 const PopupAddCard = (props) => {
   const {
@@ -8,8 +9,11 @@ const PopupAddCard = (props) => {
     onSave,
     onClose,
   } = props;
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
+  const [values, setValues, updateInitValues] = useForm({ name: '', link: '' });
+
+  useEffect(() => {
+    updateInitValues({ name: '', link: '' });
+  }, [isOpen]);
 
   return (
     <PopupWithForm
@@ -18,9 +22,7 @@ const PopupAddCard = (props) => {
       submitText="Создать"
       onSubmit={(e) => {
         e.preventDefault();
-        onSave({ name, link });
-        setName('');
-        setLink('');
+        onSave(values);
       }}
       isOpen={isOpen}
       onClose={onClose}
@@ -34,9 +36,9 @@ const PopupAddCard = (props) => {
           tabIndex="1"
           minLength="2"
           maxLength="30"
-          value={name}
+          value={values.name}
           required
-          onChange={(e) => setName(e.target.value)}
+          onChange={setValues}
         />
         <span className="form__item-error form__item-error_field_name" />
         <input
@@ -45,9 +47,9 @@ const PopupAddCard = (props) => {
           className="form__item"
           placeholder="Ссылка на картинку"
           tabIndex="2"
-          value={link}
+          value={values.link}
           required
-          onChange={(e) => setLink(e.target.value)}
+          onChange={setValues}
         />
         <span className="form__item-error form__item-error_field_link" />
       </fieldset>

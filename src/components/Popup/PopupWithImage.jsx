@@ -8,11 +8,11 @@ const PopupWithImage = (props) => {
     onClose,
   } = props;
 
-  const popupClassName = cn({
-    popup: true,
-    popup_type_preview: true,
-    popup_opened: isOpen,
-  });
+  const popupClassName = cn(
+    'popup',
+    'popup_type_preview',
+    { popup_opened: isOpen },
+  );
 
   return (
     <div className={popupClassName}>

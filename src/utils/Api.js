@@ -31,11 +31,6 @@ export class Api {
             res.message = message || `Ошибка ${res.status}`;
             return Promise.reject(res);
           });
-      })
-      .catch((err) => {
-        // eslint-disable-next-line
-        console.error(err);
-        return Promise.reject(new Error(`ApiMesto Error: ${err.message}`));
       });
   }
 
